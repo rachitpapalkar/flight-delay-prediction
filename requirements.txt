@@ -1,0 +1,7 @@
+kafka-python
+pyspark
+google-api-python-client
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+-e /Desktop/project/repository/opensky-api/python

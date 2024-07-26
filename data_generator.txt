@@ -1,0 +1,44 @@
+import pandas as pd
+import random
+import time
+
+# Load the existing data
+file_path = "/mnt/data/image.png"
+data = pd.read_csv(file_path)
+
+# Define the number of new rows to generate
+num_new_rows = 10
+
+# Generate new rows
+new_data = []
+for _ in range(num_new_rows):
+    new_row = {
+        "icao24": ''.join(random.choices('abcdef0123456789', k=6)),
+        "callsign": f"DAL{random.randint(1000, 9999)}",
+        "origin_country": "United States",
+        "time_position": int(time.time()) + random.randint(-10000, 10000),
+        "last_contact": int(time.time()) + random.randint(-10000, 10000),
+        "longitude": round(random.uniform(-180.0, 180.0), 4),
+        "latitude": round(random.uniform(-90.0, 90.0), 4),
+        "baro_altitude": round(random.uniform(0, 40000), 2),
+        "on_ground": random.choice([True, False]),
+        "velocity": round(random.uniform(0, 300), 2),
+        "true_track": round(random.uniform(0, 360), 2),
+        "vertical_rate": round(random.uniform(-3000, 3000), 2),
+        "sensors": random.choice([0, None]),
+        "geo_altitude": round(random.uniform(0, 40000), 2) if random.random() > 0.5 else None,
+        "squawk": random.choice([random.randint(1000, 7777), None]),
+        "spi": random.choice([True, False]),
+        "position_source": random.randint(0, 2),
+        "category": random.randint(0, 7)
+    }
+    new_data.append(new_row)
+
+# Create a new DataFrame and append it to the existing data
+new_df = pd.DataFrame(new_data)
+extended_data = pd.concat([data, new_df], ignore_index=True)
+
+# Save the extended data to a new CSV file
+extended_file_path = "/mnt/data/extended_flight_data.csv"
+extended_data.to_csv(extended_file_path, index=False)
+
